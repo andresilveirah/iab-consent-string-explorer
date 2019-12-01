@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7d9a3583a6dcbc02a52d57c7263a61e9",
+    "revision": "b9e29d04131764096f2e84a62ec4bc94",
     "url": "/iab-consent-string-explorer/index.html"
   },
   {
-    "revision": "618df53968428df2081d",
+    "revision": "f981ac44a70febebbe92",
     "url": "/iab-consent-string-explorer/static/css/main.34de6062.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/iab-consent-string-explorer/static/js/2.15dd8ac9.chunk.js"
   },
   {
-    "revision": "618df53968428df2081d",
-    "url": "/iab-consent-string-explorer/static/js/main.04e68780.chunk.js"
+    "revision": "f981ac44a70febebbe92",
+    "url": "/iab-consent-string-explorer/static/js/main.c8c4ae60.chunk.js"
   },
   {
     "revision": "6f54adf6d034f2a0435d",
