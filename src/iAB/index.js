@@ -1,30 +1,22 @@
+const proxied = (url) => `https://shrouded-island-73798.herokuapp.com/${url}`
+
 const vendorListUrl = (version) => version ? 
   `https://vendorlist.consensu.org/v-${version}/vendorlist.json` :
   `https://vendorlist.consensu.org/vendorlist.json`
 
-const getVendorList = (version) => () => fetch(vendorListUrl(version), { mode: 'cors' }).then(r => r.json())
+const getVendorList = (version) => () => fetch(proxied(vendorListUrl(version))).then(r => r.json()).then(list => ({ ...list, url: vendorListUrl(version)}))
 
-export default class iAB {
-  constructor(version, fetchVendorList = getVendorList(version) ) {
-    this.fetchVendorList = fetchVendorList
-  }
+const byId = (arr) => arr.reduce((collection, element) => {
+  collection[element.id] = element
+  return collection
+}, {})
 
-  get vendorList() {
-    return this.fetchVendorList()
-  }
-
-  get meta() {
-    return this.vendorList.then(({ vendorListVersion, lastUpdated }) => ({ 
-      version: vendorListVersion,
-      lastUpdated: lastUpdated
-    }))
-  }
-
-  get vendors() {
-    return this.vendorList.then(({ vendors }) => vendors)
-  }
-
-  get purposes() {
-    return this.vendorList.then(({ purposes }) => purposes)
-  }
-}
+export default (version, fetchVendorList = getVendorList(version)) => fetchVendorList().then(list => ({
+  meta: {
+    url: list.url,
+    version: list.vendorListVersion,
+    lastUpdated: list.lastUpdated,
+  },
+  vendorsById: byId(list.vendors),
+  purposesById: byId(list.purposes)
+}))
