@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { decodeConsentString as decode } from 'consent-string'
 
-function App() {
+import iAB from './iAB'
+
+const DecodedConsentString = ({ consentString }) => {
+  const [decodedString, setConsentString] = useState({})
+  try { setConsentString(decode(consentString)) } catch {}
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <code>
+      <table>
+        <tbody>
+          {Object.keys(decodedString).map((attr, i) => (
+            <tr key={i}>
+              <td>{attr}</td>
+              <td>{`${decodedString[attr] || '<i>test</i>'}`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </code>
+  )
 }
 
-export default App;
+export default () => {
+  const [consentString, setConsentString] = useState('BOq2z-OOq2z-OAGABBENCw-AAAAsyADABUADQAUg')
+  const [vendorList, setVendorList] = useState({ meta: {}, vendors: [], purposes: [] })
+  new iAB().vendorList.then(setVendorList)
+  return (
+    <div>
+      <header>
+        <a href="/">CONSENT STRING EXPLORER</a>
+      </header>
+      <main>
+        <section>
+          <input value={consentString} onChange={e => setConsentString(e.target.value)} placeholder="Consent String..." />
+        </section>
+        <section>
+          <p>Decoded String</p>
+          <DecodedConsentString {...{consentString}} />
+        </section>
+        <footer>
+          <small>
+            Vendors List version <a href="/" target="_blank"><i>{vendorList.meta.version}</i></a> last updated <i>{vendorList.meta.lastUpdated}</i>
+          </small>
+        </footer>
+      </main>
+    </div>
+  )
+}
