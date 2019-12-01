@@ -1,10 +1,13 @@
 const proxied = (url) => `https://shrouded-island-73798.herokuapp.com/${url}`
 
-const vendorListUrl = (version) => version ? 
+const vendorListUrl = (version) => version ?
   `https://vendorlist.consensu.org/v-${version}/vendorlist.json` :
   `https://vendorlist.consensu.org/vendorlist.json`
 
-const getVendorList = (version) => () => fetch(proxied(vendorListUrl(version))).then(r => r.json()).then(list => ({ ...list, url: vendorListUrl(version)}))
+const getVendorList = (version) => () =>
+  fetch(proxied(vendorListUrl(version)))
+  .then(r => r.json())
+  .then(list => ({ ...list, url: vendorListUrl(version)}))
 
 const byId = (arr) => arr.reduce((collection, element) => {
   collection[element.id] = element
